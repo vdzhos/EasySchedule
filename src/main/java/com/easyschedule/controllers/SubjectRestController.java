@@ -19,7 +19,7 @@ public class SubjectRestController {
     private SubjectService subjectService;
 
     @PostMapping
-    public ResponseEntity<Subject>  addSubject(@Valid @RequestBody Subject subject) {
+    public ResponseEntity<Subject> addSubject(@Valid @RequestBody Subject subject) {
         return new ResponseEntity<>(subjectService.addSubject(subject), HttpStatus.CREATED);
     }
 

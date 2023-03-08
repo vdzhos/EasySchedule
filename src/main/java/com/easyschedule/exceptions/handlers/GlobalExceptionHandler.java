@@ -1,6 +1,7 @@
 package com.easyschedule.exceptions.handlers;
 
 
+import com.easyschedule.exceptions.lesson.NoLessonWithSuchIdFound;
 import com.easyschedule.exceptions.user.LoginUsedException;
 import com.easyschedule.exceptions.user.UserAccessForbiddenException;
 import com.easyschedule.exceptions.user.UserNotFoundException;
@@ -26,6 +27,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(value = {UserNotFoundException.class})
     public ResponseEntity<Map<String,String>> handleUserAccessForbiddenException(UserNotFoundException e) {
+        return makeExceptionResponseEntity(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {NoLessonWithSuchIdFound.class})
+    public ResponseEntity<Map<String,String>> handleLessonNotFoundException(NoLessonWithSuchIdFound e) {
         return makeExceptionResponseEntity(e, HttpStatus.NOT_FOUND);
     }
 
