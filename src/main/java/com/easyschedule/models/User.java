@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "USER")
+@Table(name = "USERS")
 @NoArgsConstructor
 @EqualsAndHashCode
 public class User {

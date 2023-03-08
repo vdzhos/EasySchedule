@@ -18,7 +18,6 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table
 @NoArgsConstructor
 @Getter
 @Setter
@@ -33,7 +32,7 @@ public class Specialty implements Comparable<Specialty> {
     @NotBlank(message = "Specialty name must not be blank")
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "specialty_year")
     @Min(1)
     @Max(6)
     private int year;
