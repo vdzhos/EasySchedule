@@ -24,7 +24,7 @@ public class SubjectRestController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Subject> getSubject(@PathVariable Long id) throws Exception {
+    public ResponseEntity<Subject> getSubject(@PathVariable Long id) {
         return ResponseEntity.ok(subjectService.getSubject(id));
     }
 
@@ -34,13 +34,13 @@ public class SubjectRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteSubject(@PathVariable Long id) throws Exception {
+    public ResponseEntity<String> deleteSubject(@PathVariable Long id) {
         subjectService.deleteSubject(id);
         return ResponseEntity.ok("Subject with id = " + id + " deleted");
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Subject> updateSubject(@PathVariable Long id, @Valid @RequestBody SubjectPutDTO dto) throws Exception {
+    public ResponseEntity<Subject> updateSubject(@PathVariable Long id, @Valid @RequestBody SubjectPutDTO dto) {
         return ResponseEntity.ok(subjectService.updateSubject(id, dto));
     }
 

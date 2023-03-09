@@ -9,7 +9,6 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -26,14 +25,14 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public boolean deleteSubject(Long id) throws SubjectNotFoundException {
+    public boolean deleteSubject(Long id) {
         getSubject(id);
         subjectRepo.deleteById(id);
         return true;
     }
 
     @Override
-    public Subject getSubject(Long id) throws SubjectNotFoundException {
+    public Subject getSubject(Long id) {
         return subjectRepo.findById(id).orElseThrow(() -> new SubjectNotFoundException(id));
     }
 
@@ -44,7 +43,7 @@ public class SubjectServiceImpl implements SubjectService {
 
     @Override
     @Transactional
-    public Subject updateSubject(Long id, SubjectPutDTO dto) throws SubjectNotFoundException {
+    public Subject updateSubject(Long id, SubjectPutDTO dto) {
         Subject subject = getSubject(id);
         subject.setName(dto.getName());
         subject.setQuantOfGroups(dto.getQuantOfGroups());

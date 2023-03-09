@@ -27,27 +27,27 @@ public class UserServiceImpl implements UserService {
     private String userCode;
 
     @Override
-    public User addUser(UserDTO dto) throws LoginUsedException {
+    public User addUser(UserDTO dto) {
         if(userRepo.findById(dto.getLogin()).isPresent())
             throw new LoginUsedException("This login is already in use!");
         Role role = dto.getRoleCode().equals(adminCode) ? Role.ADMIN : Role.REGULAR;
         return userRepo.save(new User(dto.getLogin(), dto.getPassword(), role));
     }
     @Override
-    public User getUser(String login) throws UserNotFoundException {
+    public User getUser(String login) {
         return userRepo.findById(login).orElseThrow(() -> new UserNotFoundException(login));
     }
 
     @Override
     @Transactional
-    public boolean deleteUser(String login) throws UserNotFoundException {
+    public boolean deleteUser(String login)  {
         getUser(login);
         userRepo.deleteById(login);
         return true;
     }
     @Override
     @Transactional
-    public User updateUser(UserPutDTO dto) throws UserNotFoundException, UserAccessForbiddenException {
+    public User updateUser(UserPutDTO dto) {
         User user = getUser(dto.getLogin());
         if(!user.getPassword().equals(dto.getPassword()))
             throw new UserAccessForbiddenException("wrong password");

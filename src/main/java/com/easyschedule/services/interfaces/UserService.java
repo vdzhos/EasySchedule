@@ -2,19 +2,16 @@ package com.easyschedule.services.interfaces;
 
 import com.easyschedule.dtos.UserDTO;
 import com.easyschedule.dtos.UserPutDTO;
-import com.easyschedule.exceptions.user.LoginUsedException;
-import com.easyschedule.exceptions.user.UserAccessForbiddenException;
-import com.easyschedule.exceptions.user.UserNotFoundException;
 import com.easyschedule.models.User;
 
 public interface UserService {
 
-    User addUser(UserDTO dto) throws LoginUsedException;
+    User addUser(UserDTO dto);
 
-    User getUser(String login) throws UserNotFoundException;
+    User getUser(String login);
 
-    boolean deleteUser(String login) throws UserNotFoundException;
+    boolean deleteUser(String login);
 
-    User updateUser(UserPutDTO user) throws UserNotFoundException, UserAccessForbiddenException;
+    User updateUser(UserPutDTO user);
 
 }

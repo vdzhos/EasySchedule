@@ -20,28 +20,28 @@ public class UserRestController {
     private UserService userService;
 
     @GetMapping
-    public ResponseEntity<User> getUser(@NotBlank @RequestParam String login, @NotBlank @RequestParam String password) throws Exception {
+    public ResponseEntity<User> getUser(@NotBlank @RequestParam String login, @NotBlank @RequestParam String password) {
         return ResponseEntity.ok(getUserAndCheck(login, password));
     }
 
     @PostMapping
-    public ResponseEntity<User> addUser(@Valid @RequestBody UserDTO dto) throws Exception {
+    public ResponseEntity<User> addUser(@Valid @RequestBody UserDTO dto) {
         return new ResponseEntity<>(userService.addUser(dto), HttpStatus.CREATED);
     }
 
     @DeleteMapping
-    public ResponseEntity<String> deleteUser(@NotBlank @RequestParam String login, @NotBlank @RequestParam String password) throws Exception {
+    public ResponseEntity<String> deleteUser(@NotBlank @RequestParam String login, @NotBlank @RequestParam String password) {
         getUserAndCheck(login, password);
         return ResponseEntity.ok("User " + login + " deleted");
     }
 
     @PutMapping
-    public ResponseEntity<User> updatePassword(@Valid @RequestBody UserPutDTO dto) throws Exception {
+    public ResponseEntity<User> updatePassword(@Valid @RequestBody UserPutDTO dto) {
         return ResponseEntity.ok(userService.updateUser(dto));
 
     }
 
-    private User getUserAndCheck(String login, String password) throws Exception {
+    private User getUserAndCheck(String login, String password) {
         User user = userService.getUser(login);
         if(!user.getPassword().equals(password))
             throw new UserAccessForbiddenException("wrong password");
