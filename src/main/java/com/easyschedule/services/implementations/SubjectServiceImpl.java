@@ -49,4 +49,9 @@ public class SubjectServiceImpl implements SubjectService {
         subject.setQuantOfGroups(dto.getQuantOfGroups());
         return subjectRepo.save(subject);
     }
+
+    @Override
+    public Subject updateSubjectNoCheck(Subject subject) {
+        return subjectRepo.save(subject);
+    }
 }

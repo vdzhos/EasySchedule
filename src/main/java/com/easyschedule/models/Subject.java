@@ -149,5 +149,17 @@ public class Subject implements Comparable<Subject> {
             return this.getQuantOfGroups() - o.getQuantOfGroups();
         return cmp;
     }
+
+    public boolean hasOnlyOneSpecialty() {
+        return specialties.size() == 1;
+    }
+
+    public boolean hasSpecialty(Long spId) {
+        for (Specialty s: specialties) {
+            if (s.getId().equals(spId))
+                return true;
+        }
+        return false;
+    }
 }
 

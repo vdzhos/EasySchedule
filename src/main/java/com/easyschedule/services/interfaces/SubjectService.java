@@ -17,4 +17,6 @@ public interface SubjectService {
 
     Subject updateSubject(Long id, SubjectPutDTO dto);
 
+    Subject updateSubjectNoCheck(Subject subject);
+
 }
