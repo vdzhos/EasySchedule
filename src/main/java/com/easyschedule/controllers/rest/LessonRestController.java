@@ -2,7 +2,7 @@ package com.easyschedule.controllers.rest;
 
 import com.easyschedule.models.Lesson;
 import com.easyschedule.services.interfaces.LessonService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,12 +12,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/lessons")
+@RequiredArgsConstructor
 public class LessonRestController {
 
-    @Autowired
-    private LessonService lessonService;
+    private final LessonService lessonService;
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Lesson>> getAllLessons() {
         return ResponseEntity.ok(lessonService.getAll());
     }
@@ -28,7 +28,7 @@ public class LessonRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Lesson> addLesson(@Valid @RequestBody Lesson lesson){
+    public ResponseEntity<Lesson> addLesson(@Valid @RequestBody Lesson lesson) {
         return new ResponseEntity<>(lessonService.addLesson(lesson), HttpStatus.CREATED);
     }
 

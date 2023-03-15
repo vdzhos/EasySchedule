@@ -5,7 +5,7 @@ import com.easyschedule.dtos.UserPutDTO;
 import com.easyschedule.exceptions.user.UserAccessForbiddenException;
 import com.easyschedule.models.User;
 import com.easyschedule.services.interfaces.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,10 +15,10 @@ import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/api/users")
+@RequiredArgsConstructor
 public class UserRestController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping
     public ResponseEntity<User> getUser(@NotBlank @RequestParam String login, @NotBlank @RequestParam String password) {
@@ -39,12 +39,11 @@ public class UserRestController {
     @PutMapping
     public ResponseEntity<User> updatePassword(@Valid @RequestBody UserPutDTO dto) {
         return ResponseEntity.ok(userService.updateUser(dto));
-
     }
 
     private User getUserAndCheck(String login, String password) {
         User user = userService.getUser(login);
-        if(!user.getPassword().equals(password))
+        if (!user.getPassword().equals(password))
             throw new UserAccessForbiddenException("wrong password");
         return user;
     }

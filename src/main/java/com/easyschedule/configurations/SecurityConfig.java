@@ -49,14 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .logout()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login/**", "/registration/**","/restLogin/authenticate","/restLogin/newuser","/h2-console/**").permitAll()
+                .antMatchers("/login/**", "/registration/**", "/restLogin/authenticate", "/restLogin/newuser", "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and().headers().frameOptions().sameOrigin()
                 .and()
