@@ -33,7 +33,6 @@ public class MainController {
     @Value("${spring.application.name}")
     private String appName;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/admin")
     public String getAllAdmin(Model model){
         model.addAttribute("appName",appName);
@@ -53,7 +52,6 @@ public class MainController {
         return "editSchedule";
     }
 
-    @PreAuthorize("hasAnyRole('REGULAR', 'ADMIN')")
     @GetMapping
     public String showAllSchedules(Model model, Authentication authentication){
         model.addAttribute("appName",appName);
