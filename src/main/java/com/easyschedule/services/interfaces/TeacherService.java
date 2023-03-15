@@ -12,8 +12,8 @@ public interface TeacherService {
     boolean teacherExistsById(Long id);
     boolean teacherExistsByName(String name);
     boolean deleteTeacher(Long id);
-    Teacher updateTeacher(Long id, String name, Set<Subject> subjects);
-    Teacher updateTeacher(Teacher teacher);
+    Teacher updateTeacher(Long id, String name, Set<Subject> subjects) throws Exception;
+    Teacher updateTeacher(Teacher teacher) throws Exception;
     Teacher updateTeacherNoCheck(Teacher teacher);
     Teacher getTeacherById(Long id);
 

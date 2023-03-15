@@ -56,7 +56,6 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherRepository.existsByName(name);
     }
 
-    @CacheEvict(cacheNames = {"specialties", "allSpecialties", "subjects", "allSubjects","lessons","allLessons"}, allEntries = true)
     @Transactional
     @Override
     public boolean deleteTeacher(Long id) {
@@ -67,7 +66,7 @@ public class TeacherServiceImpl implements TeacherService {
 
 
     @Override
-    public Teacher updateTeacher(Long id, String name, Set<Subject> subjects) {
+    public Teacher updateTeacher(Long id, String name, Set<Subject> subjects) throws Exception{
         name = processor.processName(name);
         processor.checkTeacherName(name);
         processor.checkTeachersSubjects(subjects);
@@ -99,7 +98,7 @@ public class TeacherServiceImpl implements TeacherService {
     }
 
     @Override
-    public Teacher updateTeacher(Teacher teacher) {
+    public Teacher updateTeacher(Teacher teacher) throws Exception {
         return updateTeacher(teacher.getId(), teacher.getName(), teacher.getSubjects());
     }
 
@@ -108,13 +107,11 @@ public class TeacherServiceImpl implements TeacherService {
         return teacherRepository.save(teacher);
     }
 
-    @Cacheable(cacheNames = "teachers", key = "#id")
     @Override
     public Teacher getTeacherById(Long id) {
         return teacherRepository.findById(id).orElseThrow(() -> new TeacherNotFoundException("Teacher with id \""+id+"\" not found!"));
     }
 
-    @Cacheable(cacheNames = "teachers", key = "#name")
     @Override
     public Teacher getTeacherByName(String name) throws Exception {
         Iterable<Teacher> res = teacherRepository.findByName(name);

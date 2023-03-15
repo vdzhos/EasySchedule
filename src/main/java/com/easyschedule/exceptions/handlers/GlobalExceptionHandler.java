@@ -2,6 +2,8 @@ package com.easyschedule.exceptions.handlers;
 
 
 import com.easyschedule.exceptions.lesson.NoLessonWithSuchIdFound;
+import com.easyschedule.exceptions.teacher.TeacherAlreadyExistsException;
+import com.easyschedule.exceptions.teacher.TeacherNotFoundException;
 import com.easyschedule.exceptions.user.LoginUsedException;
 import com.easyschedule.exceptions.user.UserAccessForbiddenException;
 import com.easyschedule.exceptions.user.UserNotFoundException;
@@ -33,6 +35,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = {NoLessonWithSuchIdFound.class})
     public ResponseEntity<Map<String,String>> handleLessonNotFoundException(NoLessonWithSuchIdFound e) {
         return makeExceptionResponseEntity(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {TeacherNotFoundException.class})
+    public ResponseEntity<Map<String,String>> handleTeacherNotFoundException(TeacherNotFoundException e) {
+        return makeExceptionResponseEntity(e, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {TeacherAlreadyExistsException.class})
+    public ResponseEntity<Map<String,String>> handleTeacherAlreadyExistsException(TeacherAlreadyExistsException e) {
+        return makeExceptionResponseEntity(e, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class, MethodArgumentNotValidException.class, InvalidFormatException.class})
