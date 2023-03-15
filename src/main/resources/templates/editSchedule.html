@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${appName}"></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <style>
+        th {
+            background: rgba(33, 225, 255, 0.35);
+        }
+
+        .day-class:nth-child(2n+1) {
+            background: rgba(33, 225, 255, 0.03);
+        }
+
+    </style>
+
+</head>
+<body>
+
+
+<section class="container mb-5">
+    <div style="margin-top: 1em; display: flex; justify-content: end;">
+        <a class="nav-link btn btn-info mr-3" href="/" th:text="#{edit.home}">Home</a>
+        <a class="nav-link btn btn-secondary" href="/logout" th:text="#{edit.log-out}">Log out</a>
+    </div>
+
+    <header class="mb-5">
+        <h1 th:text="${appName}"></h1>
+    </header>
+
+
+
+    <div th:if="${showNotification}" th:class="${success} ?'alert alert-success alert-dismissible': 'alert alert-danger alert-dismissible'">
+        <button type="button" class="close" data-dismiss="alert">×</button>
+        <strong th:text="${success}? 'Success!':'Error!'"></strong>&nbsp;<span th:text="${notification}"/>
+    </div>
+
+    <!------------------------------------------------------------------------------------------------------------->
+    <div class="row row-content align-items-center">
+        <div class="col-12">
+
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a th:class="${tab==0} ? 'nav-link active' : 'nav-link'" href="#specialties" role="tab" data-toggle="tab" th:text="#{edit.specialties}">Specialties</a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:class="${tab==1} ? 'nav-link active' : 'nav-link'" href="#subjects" role="tab" data-toggle="tab" th:text="#{edit.subjects}">Subjects</a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:class="${tab==2} ? 'nav-link active' : 'nav-link'" href="#teachers" role="tab" data-toggle="tab" th:text="#{edit.teachers}">Teachers</a>
+                </li>
+
+                <li class="nav-item">
+                    <a th:class="${tab==3} ? 'nav-link active' : 'nav-link'" href="#lessons" role="tab" data-toggle="tab" th:text="#{edit.lessons}">Lessons</a>
+                </li>
+            </ul>
+
+            <div style="border-left: 1px solid lightgrey; border-right: 1px solid lightgrey; border-bottom: 1px solid lightgrey; padding: 50px;">
+                <div class="tab-content">
+                    <div role="tabpanel" th:class="${tab==0} ? 'tab-pane fade show active' : 'tab-pane fade'" id="specialties">
+                        <h3 class="mt-3 mb-4" th:text="#{edit.specialties}">Specialties</h3>
+
+                        <form action="/specialty/add" method="post">
+                            <label class="mr-2"><span th:text="#{edit.name}"></span>:  <input required name="name" type="text" th:placeholder="#{edit.enter-the-name}"/></label>
+                            <label class="mr-4"><span th:text="#{edit.year}"></span>: <select class="form-select" name="year">
+                                <option selected="selected">1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                            </select></label>
+                            <button class="btn btn-info mr-1" type="submit" th:text="#{edit.add}">Add</button>
+                            <button class="btn btn-secondary" type="reset" th:text="#{edit.clear}">Clear</button>
+                        </form>
+                        <div class="mt-5">
+                            <h4 class="mb-4" th:text="#{edit.added-specialties}">Added specialties</h4>
+                            <table class="table">
+                                <tr>
+                                    <th style="width: 50%;" th:text="#{edit.name}">Name</th>
+                                    <th style="width: 20%;" th:text="#{edit.year}">Year</th>
+                                </tr>
+                                <tr th:each="specialty: ${specialties}">
+                                    <td th:text="${specialty.name}"></td>
+                                    <td th:text="${specialty.year}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" th:class="${tab==1} ? 'tab-pane fade show active' : 'tab-pane fade'" id="subjects">
+                        <h3 class="mt-3 mb-4" th:text="#{edit.subjects}">Subjects</h3>
+
+                        <form action="/subject/add" method="post">
+                            <label class="mr-2"><span th:text="#{edit.name}"></span>: <input required name="name" type="text" th:placeholder="#{edit.enter-the-name}"/></label>
+                            <label class="mr-2"><span th:text="#{edit.quantity-of-groups}"></span>: <input required name="quantOfGroups" type="number" min="1" max="50"/></label>
+                            <div class="dropdown form-group">
+                                <button class="btn bg-light dropdown-toggle" type="button" id="dropdownMenuSpecialtyAdd" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{edit.specialties}">
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuSpecialtyAdd">
+                                    <li th:each="specialty: ${specialties}" class="dropdown-item"><input name="specialties" th:value="${specialty.id}"
+                                                                                                         th:text="${specialty}" type="checkbox"/></li>
+                                </ul>
+                            </div>
+                            <button id="btnAddSubject" class="btn btn-info mr-1" type="submit" th:text="#{edit.add}" >Add</button>
+                            <button class="btn btn-secondary" type="reset" th:text="#{edit.clear}">Clear</button>
+                        </form>
+                        <br/>
+                        <div class="mt-5">
+                            <h4 class="mb-4" th:text="#{edit.added-subjects}">Added subjects</h4>
+                            <table class="table" >
+                                <tr>
+                                    <th style="width: 15%;" th:text="#{edit.name}">Name</th>
+                                    <th style="width: 15%;" th:text="#{edit.quantity-of-groups}">Quantity of groups</th>
+                                    <th style="width: 30%;" th:text="#{edit.teachers}">Teachers</th>
+                                    <th style="width: 30%;" th:text="#{edit.specialties}">Specialties</th>
+                                </tr>
+                                <tr th:each="subject: ${subjects}">
+                                    <td th:text="${subject.name}"></td>
+                                    <td th:text="${subject.quantOfGroups}"></td>
+                                    <td th:text="${subject.getTeachersToString()}"></td>
+                                    <td th:text="${subject.getSpecialtiesToString()}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" th:class="${tab==2} ? 'tab-pane fade show active' : 'tab-pane fade'" id="teachers">
+                        <h3 class="mt-3 mb-4" th:text="#{edit.teachers}">Teachers</h3>
+
+                        <form action="/teacher/add" method="post">
+                            <label><span th:text="#{edit.name}"></span>: <input required name="name" type="text" th:placeholder="#{edit.enter-the-name}"/></label>
+                            <div class="dropdown form-group">
+                                <button class="btn bg-light dropdown-toggle" type="button" id="dropdownMenuSubjectAdd" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{edit.subjects}">
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuSubjectAdd">
+                                    <li th:each="subject: ${subjects}" class="dropdown-item"><input name="subjects" th:value="${subject.id}" th:text="${subject}" type="checkbox"/></li>
+                                </ul>
+                            </div>
+                            <button id="btnAddTeacher" class="btn btn-info mr-1" type="submit" th:text="#{edit.add}">Add</button>
+                            <button class="btn btn-secondary" type="reset" th:text="#{edit.clear}">Clear</button>
+                        </form>
+                        <br/>
+
+                        <br>
+                        <div>
+                            <table class="table">
+                                <h4 class="mb-4" th:text="#{edit.added-teachers}">Added teachers</h4>
+                                <tr>
+                                    <th style="width: 40%;" th:text="#{edit.name}">Name</th>
+                                    <th style="width: 50%;" th:text="#{edit.subjects}">Subjects</th>
+                                </tr>
+                                <tr th:each="teacher: ${teachers}">
+                                    <td th:text="${teacher.name}"></td>
+                                    <td th:text="${teacher.getSubjectsToString()}"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" th:class="${tab==3} ? 'tab-pane fade show active' : 'tab-pane fade'" id="lessons">
+                        <h3 class="mt-3 mb-4" th:text="#{edit.lessons}">Lessons</h3>
+
+                        <form action="/lesson/add" method="post">
+                            <input name="specId" type="hidden" th:value="${lessonSpec}">
+                            <label><span th:text="#{edit.day}"></span>: <select required name="day">
+                                <option value="1">MONDAY</option>
+                                <option value="2">TUESDAY</option>
+                                <option value="3">WEDNESDAY</option>
+                                <option value="4">THURSDAY</option>
+                                <option value="5">FRIDAY</option>
+                                <option value="6">SATURDAY</option>
+                                <option value="7">SUNDAY</option>
+                            </select></label>
+                            <label><span th:text="#{edit.time}"></span>: <select required name="time">
+                                <option value="0">8:30-9:50</option>
+                                <option value="1">10:00-11:20</option>
+                                <option value="2">11:40-13:00</option>
+                                <option value="3">13:30-14:50</option>
+                                <option value="4">15:00-16:20</option>
+                                <option value="5">16:30-17:50</option>
+                                <option value="6">18:00-19:20</option>
+                            </select></label>
+                            <label><span th:text="#{edit.subject}"></span>: <select required name="subjId" id="subjId">
+                                <option th:each="subject: ${subjects}" th:text="${subject.name}" th:value="${subject.id}"></option>
+                            </select></label>
+                            <label><span th:text="#{edit.teacher}"></span>: <select required name="teachId" id="teachId">
+                                <option th:each="teacher: ${teachers}" th:text="${teacher.name}" th:value="${teacher.id}"></option>
+                            </select></label>
+                            <label><span th:text="#{edit.group}"></span> (0 = lecture):
+                                <input required type="number" id="lessonGroup" name="group" min="0" max="50" step="1" value="0">
+                            </label>
+                            <label><span th:text="#{edit.weeks}"></span>: <input required name="weeks" type="text"/></label>
+                            <label><span th:text="#{edit.room}"></span>:
+                                <input required type="text" name="room" list="lessonRoom1" value="remotely"/>
+                                <datalist id="lessonRoom1">
+                                    <option value="remotely"></option>
+                                </datalist>
+                            </label>
+                            <button class="btn btn-info mr-1" type="submit" th:text="#{edit.add}">Add</button>
+                            <button class="btn btn-secondary" type="reset" th:text="#{edit.clear}">Clear</button>
+                        </form>
+
+                        <br>
+
+                        <form action="/lesson/getBySpecialtyId" method="get">
+                            <label for="specId">Schedule for: </label>
+                            <select required name="specId" id="specId">
+                                <option th:selected="${lessonSpec} == -1" value="-1">Not selected</option>
+                                <option th:each="specialty: ${specialties}" th:selected="${specialty.id} == ${lessonSpec}" th:text="${specialty.name} + '-' + ${specialty.year}" th:value="${specialty.id}"></option>
+                            </select>
+                            <br>
+                            <button class="btn btn-info mr-1" type="submit">Load schedule</button>
+                        </form>
+
+                        <br>
+
+                        <div class="row" th:if="${lessonSpec!=-1}">
+                            <div class="col-12">
+                                <h3>Added lessons</h3>
+                            </div>
+                            <div class="col-12">
+                                <h4 th:if="${schedule.getDays().size()<=0}">No results found</h4>
+                                <table th:if="${schedule.getDays().size()>0}" class="table">
+                                    <tr>
+                                        <th>Day</th>
+                                        <th>Time</th>
+                                        <th>Subject</th>
+                                        <th>Teacher</th>
+                                        <th>Group</th>
+                                        <th>Weeks</th>
+                                        <th>Room</th>
+                                    </tr>
+                                    <tbody class="day-class" th:each="day: ${schedule.getDays()}" >
+                                        <tr>
+                                            <td th:rowspan="${day.getTimeSlots().size()+1+day.getLessonsNumber()}" th:text="${day.getDay()}"></td>
+                                        </tr>
+                                        <th:block th:each="timeSlot: ${day.getTimeSlots()}">
+                                            <tr>
+                                                <td th:rowspan="${timeSlot.getLessons().size()+1}" th:text="${timeSlot.getTime()}"></td>
+                                            </tr>
+                                            <tr th:each="lesson: ${timeSlot.getLessons()}">
+                                                <td th:text="${lesson.getSubject().getName()}"></td>
+                                                <td th:text="${lesson.getTeacher().getName()}"></td>
+                                                <td th:text="${lesson.getGroup()}"></td>
+                                                <td th:text="${lesson.getWeeks()}"></td>
+                                                <td th:text="${lesson.getRoom()}"></td>
+                                            </tr>
+                                        </th:block>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+
+        let lessons = /*[[${schedule.getLessons()}]]*/ 'default';
+        let teachers = /*[[${teachers}]]*/ 'default';
+        let subjects = /*[[${subjects}]]*/ 'default';
+
+        function setOnChange() {
+            for (let lesson of lessons) {
+                let subjectUpdate = document.getElementById("subjId" + lesson.id.toString());
+                let teacherUpdate = document.getElementById("teachId" + lesson.id.toString());
+                let groupUpdate = document.getElementById("lessonGroup" + lesson.id.toString());
+
+                subjectUpdate.onchange = function(){
+                    subjectsOnChange(subjectUpdate,teacherUpdate,groupUpdate,null);
+                }
+                subjectsOnChange(subjectUpdate,teacherUpdate,groupUpdate,lesson);
+            }
+
+            let subjectUpdate = document.getElementById("subjId");
+            let teacherUpdate = document.getElementById("teachId");
+            let groupUpdate = document.getElementById("lessonGroup");
+
+            subjectUpdate.onchange = function(){
+                subjectsOnChange(subjectUpdate,teacherUpdate,groupUpdate);
+            }
+            subjectsOnChange(subjectUpdate,teacherUpdate,groupUpdate);
+
+        }
+
+        function subjectsOnChange(subjectUpdate,teacherUpdate,groupUpdate,lesson) {
+            let id = subjectUpdate.options[subjectUpdate.selectedIndex].value;
+            let options = [];
+
+            for (let teacher of teachers) {
+                if(teacher.subjects.filter(it => it.toString() === id.toString()).length > 0)
+                    options.push("<option value=\""+teacher.id+"\" "+selected(lesson,teacher.id)+">"+teacher.name+"</option>");
+            }
+            teacherUpdate.innerHTML = options.join();
+
+            groupUpdate.max = findSubjectGroupsQuant(id);
+            if(lesson == null) groupUpdate.value = 0;
+            else groupUpdate.value = lesson.group.value;
+        }
+
+        function selected(lesson,id) {
+            if (lesson == null || lesson.teacher.toString() !== id.toString()) return "";
+            else return "selected";
+        }
+
+        function findSubjectGroupsQuant(id) {
+            for (let subject of subjects) {
+                if(subject.id.toString()===id.toString()) return subject.quantOfGroups;
+            }
+            return 50;
+        }
+
+        setOnChange()
+
+        /*]]>*/
+    </script>
+
+
+</section>
+
+<script>
+    function isAtLeastOneCheckboxChecked(name, forUpdate = false) {
+        const checkboxes = document.getElementsByName(name);
+        for (let i = 0; i < checkboxes.length; i += 1) {
+            const cur = checkboxes[i];
+            if (forUpdate) {
+                if (document.getElementById('modal' + (cur.dataset.subj)).classList.contains('show')) {
+                    if (cur.checked) {
+                        //alert (i + ' ' + checkboxes[i].value + " checked");
+                        return true;
+                    }
+                }
+            }
+            else if (cur.checked) return true;
+        }
+        return false;
+    }
+
+    document.getElementById('btnAddSubject').addEventListener('click', (e) => {
+        if (!isAtLeastOneCheckboxChecked('specialties')) {
+            alert("Choose at least one specialty!");
+            e.preventDefault();
+        }
+    });
+
+    document.getElementById('btnAddTeacher').addEventListener('click', (e) => {
+        if (!isAtLeastOneCheckboxChecked('subjects')) {
+            alert("Choose at least one subject!");
+            e.preventDefault();
+        }
+    });
+
+</script>
+</body>
+</html>
