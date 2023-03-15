@@ -1,4 +1,4 @@
-package com.easyschedule.controllers;
+package com.easyschedule.controllers.rest;
 
 import com.easyschedule.models.Lesson;
 import com.easyschedule.services.interfaces.LessonService;

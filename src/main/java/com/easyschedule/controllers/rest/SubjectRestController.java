@@ -1,4 +1,4 @@
-package com.easyschedule.controllers;
+package com.easyschedule.controllers.rest;
 
 import com.easyschedule.dtos.SubjectPutDTO;
 import com.easyschedule.models.Subject;
