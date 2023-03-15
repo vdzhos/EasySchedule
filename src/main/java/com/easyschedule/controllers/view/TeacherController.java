@@ -40,7 +40,7 @@ public class TeacherController {
     }
 
     @PostMapping("/delete")
-    public RedirectView deleteTeacher(@RequestParam Long id, RedirectAttributes redir) throws Exception {
+    public RedirectView deleteTeacher(@RequestParam Long id, RedirectAttributes redir) {
         RedirectView redirectView = new RedirectView("/admin", true);
         String name = teacherService.getTeacherById(id).getName();
         String notification = "Teacher '" + name + "' has been successfully deleted!";
