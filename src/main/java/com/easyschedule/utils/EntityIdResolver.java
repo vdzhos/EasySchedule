@@ -2,7 +2,8 @@ package com.easyschedule.utils;
 
 import com.fasterxml.jackson.annotation.ObjectIdGenerator;
 import com.fasterxml.jackson.annotation.ObjectIdResolver;
-import jakarta.persistence.EntityManager;
+
+import javax.persistence.EntityManager;
 
 public class EntityIdResolver implements ObjectIdResolver {
 

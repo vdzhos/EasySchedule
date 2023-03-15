@@ -5,12 +5,13 @@ import com.easyschedule.dtos.UserPutDTO;
 import com.easyschedule.exceptions.user.UserAccessForbiddenException;
 import com.easyschedule.models.User;
 import com.easyschedule.services.interfaces.UserService;
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
 @RestController
 @RequestMapping("/api/users")

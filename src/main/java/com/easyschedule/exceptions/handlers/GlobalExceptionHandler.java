@@ -6,13 +6,13 @@ import com.easyschedule.exceptions.user.LoginUsedException;
 import com.easyschedule.exceptions.user.UserAccessForbiddenException;
 import com.easyschedule.exceptions.user.UserNotFoundException;
 import com.fasterxml.jackson.databind.exc.InvalidFormatException;
-import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
 import java.util.HashMap;
 import java.util.Map;
 

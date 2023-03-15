@@ -1,8 +1,9 @@
 package com.easyschedule.annotations;
 
-import jakarta.validation.ConstraintValidator;
-import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Value;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
 
 public class RoleCodeValidator implements ConstraintValidator<RoleCodeMatches, String> {
 
