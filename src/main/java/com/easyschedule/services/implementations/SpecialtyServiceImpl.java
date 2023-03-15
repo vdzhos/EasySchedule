@@ -2,6 +2,7 @@ package com.easyschedule.services.implementations;
 
 import com.easyschedule.exceptions.specialty.SpecialtyInstanceAlreadyExistsException;
 import com.easyschedule.exceptions.specialty.SpecialtyNotFoundException;
+import com.easyschedule.models.Lesson;
 import com.easyschedule.models.Specialty;
 import com.easyschedule.models.Subject;
 import com.easyschedule.repositories.SpecialtyRepository;
@@ -15,10 +16,7 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -122,5 +120,18 @@ public class SpecialtyServiceImpl implements SpecialtyService {
             specialtyRepository.deleteById(s.getId());
             deleteSubjects(s.getId());
         }
+    }
+    @Override
+    public Iterable<Subject> getSpecialtySubjects(Long specialtyId) {
+        return getSpecialty(specialtyId).getSubjects();
+    }
+
+    @Override
+    public List<Lesson> getSpecialtyLessons(Long id) {
+        List<Lesson> lessons = new ArrayList<>();
+        for (Subject s : getSpecialtySubjects(id)) {
+            lessons.addAll(s.getLessons());
+        }
+        return lessons;
     }
 }

@@ -12,6 +12,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.time.DayOfWeek;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 @Entity
 @NoArgsConstructor
@@ -129,6 +132,24 @@ public class Lesson implements Comparable<Lesson>{
         if(this.group.getType().ordinal()>that.group.getType().ordinal()) return 1;
         if(this.group.getType().ordinal()<that.group.getType().ordinal()) return -1;
         return 0;
+    }
+
+    public Set<Integer> getIntWeeks() {
+        SortedSet<Integer> res = new TreeSet<>();
+        String[] arr = weeks.split(",");
+        for(String ss : arr) {
+            if(ss.contains("-")) {
+                String[] arr1 = ss.split("-");
+                int si = Integer.parseInt(arr1[0]);
+                int li = Integer.parseInt(arr1[1]);
+                res.add(si);
+                res.add(li);
+                for(int i = si + 1; i < li; i++)
+                    res.add(i);
+            } else
+                res.add(Integer.parseInt(ss));
+        }
+        return res;
     }
 
 
