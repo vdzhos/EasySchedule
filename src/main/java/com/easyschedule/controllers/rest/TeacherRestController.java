@@ -3,7 +3,7 @@ package com.easyschedule.controllers.rest;
 import com.easyschedule.exceptions.teacher.TeacherNotFoundException;
 import com.easyschedule.models.Teacher;
 import com.easyschedule.services.interfaces.TeacherService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,12 +13,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/teachers")
+@RequiredArgsConstructor
 public class TeacherRestController {
 
-    @Autowired
-    private TeacherService teacherService;
+    private final TeacherService teacherService;
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Teacher>> getAllTeachers() {
         return ResponseEntity.ok((List<Teacher>) teacherService.getAll());
     }
@@ -29,7 +29,7 @@ public class TeacherRestController {
     }
 
     @PostMapping
-    public ResponseEntity<Teacher> addTeacher(@Valid @RequestBody Teacher teacher){
+    public ResponseEntity<Teacher> addTeacher(@Valid @RequestBody Teacher teacher) {
         return new ResponseEntity<>(teacherService.addTeacher(teacher), HttpStatus.CREATED);
     }
 

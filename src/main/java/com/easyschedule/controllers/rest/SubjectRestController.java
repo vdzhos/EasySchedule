@@ -3,7 +3,7 @@ package com.easyschedule.controllers.rest;
 import com.easyschedule.dtos.SubjectPutDTO;
 import com.easyschedule.models.Subject;
 import com.easyschedule.services.interfaces.SubjectService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,10 +13,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/subjects")
+@RequiredArgsConstructor
 public class SubjectRestController {
 
-    @Autowired
-    private SubjectService subjectService;
+    private final SubjectService subjectService;
 
     @PostMapping
     public ResponseEntity<Subject> addSubject(@Valid @RequestBody Subject subject) {
@@ -28,7 +28,7 @@ public class SubjectRestController {
         return ResponseEntity.ok(subjectService.getSubject(id));
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity<List<Subject>> getAllSubjects() {
         return ResponseEntity.ok(subjectService.getAll());
     }

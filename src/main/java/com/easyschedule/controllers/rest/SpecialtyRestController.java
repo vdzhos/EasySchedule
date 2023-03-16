@@ -17,7 +17,7 @@ import javax.validation.constraints.Min;
 
 @RestController
 @Validated
-@RequestMapping("/specialties")
+@RequestMapping("/api/specialties")
 @RequiredArgsConstructor
 public class SpecialtyRestController {
 
