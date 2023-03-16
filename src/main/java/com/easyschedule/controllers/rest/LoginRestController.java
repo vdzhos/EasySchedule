@@ -31,7 +31,7 @@ public class LoginRestController {
     private AuthenticationManager authManager;
 
     @PostMapping("/authenticate")
-    public ResponseEntity<String> authenticate(@NotBlank @RequestBody Map<String, String> params) throws UserNotFoundException, InvalidPasswordException {
+    public ResponseEntity<Map<String, String>> authenticate(@NotBlank @RequestBody Map<String, String> params) throws UserNotFoundException, InvalidPasswordException {
         if(!params.containsKey("login") || !params.containsKey("password")) {{
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }}
@@ -45,14 +45,14 @@ public class LoginRestController {
         Authentication authentication = authManager.authenticate(authRequest);
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
-        return new ResponseEntity<>("You have successfully logged in", HttpStatus.OK);
+        return new ResponseEntity<>(Map.of("message","You have successfully logged in"), HttpStatus.OK);
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@Valid @RequestBody UserDTO userData) throws LoginUsedException
+    public ResponseEntity<Map<String, String>> registerUser(@Valid @RequestBody UserDTO userData) throws LoginUsedException
     {
         loginService.addUser(userData);
-        return new ResponseEntity<>("Success: New user registered", HttpStatus.CREATED);
+        return new ResponseEntity<>(Map.of("message","Success: New user registered"), HttpStatus.CREATED);
     }
 
 }

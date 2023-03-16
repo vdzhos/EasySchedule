@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/lessons")
@@ -39,9 +40,9 @@ public class LessonRestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteLesson(@PathVariable(value = "id") Long id) throws Exception {
+    public ResponseEntity<Map<String, String>> deleteLesson(@PathVariable(value = "id") Long id) throws Exception {
         lessonService.deleteLesson(id);
-        return ResponseEntity.ok("Lesson with id = " + id + " deleted");
+        return ResponseEntity.ok(Map.of("message", "Lesson with id = " + id + " deleted"));
     }
 
 }
