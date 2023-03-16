@@ -69,7 +69,7 @@
                     <div role="tabpanel" th:class="${tab==0} ? 'tab-pane fade show active' : 'tab-pane fade'" id="specialties">
                         <h3 class="mt-3 mb-4" th:text="#{edit.specialties}">Specialties</h3>
 
-                        <form action="/specialty/add" method="post">
+                        <form action="/specialty/add" method="post" autocomplete="off">
                             <label class="mr-2"><span th:text="#{edit.name}"></span>:  <input required name="name" type="text" th:placeholder="#{edit.enter-the-name}"/></label>
                             <label class="mr-4"><span th:text="#{edit.year}"></span>: <select class="form-select" name="year">
                                 <option selected="selected">1</option>
@@ -100,7 +100,7 @@
                     <div role="tabpanel" th:class="${tab==1} ? 'tab-pane fade show active' : 'tab-pane fade'" id="subjects">
                         <h3 class="mt-3 mb-4" th:text="#{edit.subjects}">Subjects</h3>
 
-                        <form action="/subject/add" method="post">
+                        <form action="/subject/add" method="post" autocomplete="off">
                             <label class="mr-2"><span th:text="#{edit.name}"></span>: <input required name="name" type="text" th:placeholder="#{edit.enter-the-name}"/></label>
                             <label class="mr-2"><span th:text="#{edit.quantity-of-groups}"></span>: <input required name="quantOfGroups" type="number" min="1" max="50"/></label>
                             <div class="dropdown form-group">
@@ -137,7 +137,7 @@
                     <div role="tabpanel" th:class="${tab==2} ? 'tab-pane fade show active' : 'tab-pane fade'" id="teachers">
                         <h3 class="mt-3 mb-4" th:text="#{edit.teachers}">Teachers</h3>
 
-                        <form action="/teacher/add" method="post">
+                        <form action="/teacher/add" method="post" autocomplete="off">
                             <label><span th:text="#{edit.name}"></span>: <input required name="name" type="text" th:placeholder="#{edit.enter-the-name}"/></label>
                             <div class="dropdown form-group">
                                 <button class="btn bg-light dropdown-toggle" type="button" id="dropdownMenuSubjectAdd" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{edit.subjects}">
@@ -170,7 +170,7 @@
                     <div role="tabpanel" th:class="${tab==3} ? 'tab-pane fade show active' : 'tab-pane fade'" id="lessons">
                         <h3 class="mt-3 mb-4" th:text="#{edit.lessons}">Lessons</h3>
 
-                        <form action="/lesson/add" method="post">
+                        <form action="/lesson/add" method="post" autocomplete="off">
                             <input name="specId" type="hidden" th:value="${lessonSpec}">
                             <label><span th:text="#{edit.day}"></span>: <select required name="day">
                                 <option value="1">MONDAY</option>
