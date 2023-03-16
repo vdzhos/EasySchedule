@@ -56,7 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/login/**", "/registration/**","/restLogin/authenticate","/restLogin/newuser","/h2-console/**").permitAll()
+                .antMatchers("/api/login/authenticate", "/api/login/register", "/login/**", "/registration/**", "/h2-console/**").permitAll()
                 .anyRequest().authenticated()
                 .and().headers().frameOptions().sameOrigin()
                 .and()
