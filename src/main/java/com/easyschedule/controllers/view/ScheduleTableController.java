@@ -83,4 +83,35 @@ public class ScheduleTableController {
         model.addAttribute("rooms", rooms);
         model.addAttribute("schedule",new Schedule(lessons));
     }
+
+    @GetMapping("/filterSchedule")
+    public String applyFilters(@RequestParam String subjectId, @RequestParam String teacherId, @RequestParam int week, @RequestParam String room, Model model) {
+        if(!subjectId.equals("Not selected"))
+            lessons = this.scheduleService.getSubjectLessons(Long.parseLong(subjectId));
+        else if(subjects != null)
+            lessons = this.scheduleService.getLessonsFromSubjects(subjects);
+
+        if(this.teacherId != null)
+            lessons.removeIf(less -> less.getTeacher().getId().longValue() != this.teacherId.longValue());
+        else if(!teacherId.equals("Not selected"))
+            lessons.removeIf(less -> less.getTeacher().getId().longValue() != Long.parseLong(teacherId));
+
+        if(week != -1)
+            lessons = this.scheduleService.filterLessonsByWeek(lessons, week);
+
+        if(!room.equals("Not selected"))
+            lessons = this.scheduleService.filterLessonsByRoom(lessons, room);
+
+        model.addAttribute("schedule",new Schedule(lessons));
+        model.addAttribute("appName",appName);
+        model.addAttribute("entityName", entityName);
+        model.addAttribute("subjects", this.subjects);
+        model.addAttribute("rooms", rooms);
+        model.addAttribute("weeks", this.weeks);
+        model.addAttribute("forSpecialty", this.teacherId == null);
+        if(this.teachers != null)
+            model.addAttribute("teachers", teachers);
+        return "scheduleTablePage";
+    }
+
 }

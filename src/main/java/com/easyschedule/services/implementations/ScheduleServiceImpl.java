@@ -87,4 +87,36 @@ public class ScheduleServiceImpl implements ScheduleService {
         subjects.forEach(subj -> res.addAll(subj.getTeachers()));
         return res;
     }
+
+    //filters
+
+    @Override
+    public List<Lesson> getLessonsFromSubjects(Iterable<Subject> subjects) {
+        List<Lesson> lessons = new ArrayList<>();
+        StreamSupport.stream(subjects.spliterator(), false).forEach(subj -> lessons.addAll(subj.getLessons()));
+        return lessons;
+    }
+
+    @Override
+    public List<Lesson> getSubjectLessons(Long id) {
+        return subjectService
+                .getSubject(id)
+                .getLessons();
+    }
+
+    @Override
+    public List<Lesson> filterLessonsByWeek(List<Lesson> list, int week) {
+        return list
+                .stream()
+                .filter(less -> less.getIntWeeks().contains(week))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Lesson> filterLessonsByRoom(List<Lesson> list, String room) {
+        return list
+                .stream()
+                .filter(less -> less.getRoom().equalsByString(room))
+                .collect(Collectors.toList());
+    }
 }
