@@ -14,4 +14,6 @@ public interface UserService {
 
     User updateUser(UserPutDTO user);
 
+    User updateUser(User user);
+
 }
