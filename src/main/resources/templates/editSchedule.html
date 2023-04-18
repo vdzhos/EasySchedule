@@ -88,10 +88,14 @@
                                 <tr>
                                     <th style="width: 50%;" th:text="#{edit.name}">Name</th>
                                     <th style="width: 20%;" th:text="#{edit.year}">Year</th>
+                                    <th style="width: 10%;"></th>
                                 </tr>
                                 <tr th:each="specialty: ${specialties}">
                                     <td th:text="${specialty.name}"></td>
                                     <td th:text="${specialty.year}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" th:attr="data-target='#modal'+${specialty.id}" th:text="#{edit.change}">Change</button>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -123,12 +127,16 @@
                                     <th style="width: 15%;" th:text="#{edit.quantity-of-groups}">Quantity of groups</th>
                                     <th style="width: 30%;" th:text="#{edit.teachers}">Teachers</th>
                                     <th style="width: 30%;" th:text="#{edit.specialties}">Specialties</th>
+                                    <th style="width: 10%;"></th>
                                 </tr>
                                 <tr th:each="subject: ${subjects}">
                                     <td th:text="${subject.name}"></td>
                                     <td th:text="${subject.quantOfGroups}"></td>
                                     <td th:text="${subject.getTeachersToString()}"></td>
                                     <td th:text="${subject.getSpecialtiesToString()}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" th:attr="data-target='#modal'+${subject.id}" th:text="#{edit.change}">Change</button>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -158,10 +166,14 @@
                                 <tr>
                                     <th style="width: 40%;" th:text="#{edit.name}">Name</th>
                                     <th style="width: 50%;" th:text="#{edit.subjects}">Subjects</th>
+                                    <th style="width: 10%;" ></th>
                                 </tr>
                                 <tr th:each="teacher: ${teachers}">
                                     <td th:text="${teacher.name}"></td>
                                     <td th:text="${teacher.getSubjectsToString()}"></td>
+                                    <td><form action="teacher/update/" method="post">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" th:attr="data-target='#modal'+${teacher.id}" th:text="#{edit.change}">Change</button>
+                                    </form></td>
                                 </tr>
                             </table>
                         </div>
@@ -239,6 +251,7 @@
                                         <th>Group</th>
                                         <th>Weeks</th>
                                         <th>Room</th>
+                                        <th style="width: 10%;"></th>
                                     </tr>
                                     <tbody class="day-class" th:each="day: ${schedule.getDays()}" >
                                         <tr>
@@ -254,6 +267,9 @@
                                                 <td th:text="${lesson.getGroup()}"></td>
                                                 <td th:text="${lesson.getWeeks()}"></td>
                                                 <td th:text="${lesson.getRoom()}"></td>
+                                                <td>
+                                                    <button type="button" class="btn btn-primary" data-toggle="modal" th:attr="data-target='#modal'+${lesson.id}" th:text="#{edit.change}">Change</button>
+                                                </td>
                                             </tr>
                                         </th:block>
                                     </tbody>
@@ -267,6 +283,246 @@
 
         </div>
     </div>
+
+    <section>
+        <div th:each="specialty: ${specialties}" class="modal fade" th:id="'modal'+${specialty.id}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Specialties</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <form class="col-12" action="/specialty/update/" method="post">
+                                    <div class="form-group">
+                                        <label for="specName">Name:</label>
+                                        <input required th:attr="value=${specialty.name} " type="text" class="form-control" id="specName" placeholder="Enter the name" name="specName">
+                                    </div>
+                                    <input name="id" type="hidden" th:value="${specialty.id}">
+                                    <input name="specialtyToString" type="hidden" th:value="${specialty.toString()}">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="col-md-2 col-sm-12" for="specYear">Year:</label>
+                                            <select class="col-md-2 col-sm-2 form-select"  id="specYear" name="specYear">
+                                                <option th:each="i : ${#numbers.sequence(1, 6)}" th:value="${i}" th:text="${i}"
+                                                        th:selected="${i==specialty.year}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div style="height: 15px;"></div>
+                                    <div class="form-group">
+                                        <button type="submit" class="col-3 btn btn-success">Update</button>
+                                        <button formaction="specialty/delete/" type="submit" class="ml-2 col-3 btn btn-danger">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div th:each="subject: ${subjects}" class="modal fade" th:id="'modal'+${subject.id}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Subjects</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <form class="col-12" action="/subject/update/" method="post">
+                                    <div class="form-group">
+                                        <label for="subjName">Name:</label>
+                                        <input required th:attr="value=${subject.name} " type="text" class="form-control" id="subjName" placeholder="Enter the name" name="subjName">
+                                    </div>
+                                    <input name="id" type="hidden" th:value="${subject.id}">
+                                    <input name="subject" type="hidden" th:value="${subject.toString()}">
+                                    <div class="form-group">
+                                        <label for="subjQuantOfGroups">Quantity of groups:</label>
+                                        <input required class="form-control" type="number" id="subjQuantOfGroups" name="subjQuantOfGroups" min="1" max="50" step="1" th:value="${subject.quantOfGroups}">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subjTeachers">Teachers:</label>
+                                        <input th:attr="value=${subject.getTeachersToString()} " type="text" class="form-control" id="subjTeachers" name="subjTeachers" disabled>
+                                    </div>
+                                    <div class="dropdown form-group">
+                                        <button class="btn bg-light dropdown-toggle" type="button" id="dropdownMenuSpecialty" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{edit.specialties}">
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuSpecialty">
+                                            <li th:each="specialty: ${specialties}" class="dropdown-item"><input name="subjSpecialties" th:data-subj="${subject.id}" th:value="${specialty.id}"
+                                                                                                                 th:text="${specialty}" type="checkbox" th:checked="${subject.hasSpecialty(specialty)}"/></li>
+                                        </ul>
+                                    </div>
+                                    <div style="height: 15px;"></div>
+                                    <div class="form-group">
+                                        <button id="btnUpdateSubject" type="submit" class="col-3 btn btn-success" th:text="#{edit.update}" onclick="if (!isAtLeastOneCheckboxChecked('subjSpecialties', true)) { alert('Choose at least one specialty!'); event.preventDefault(); }">Update</button>
+                                        <button formaction="subject/delete/" type="submit" class="ml-2 col-3 btn btn-danger" th:text="#{edit.delete}">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div th:each="teacher: ${teachers}" class="modal fade" th:id="'modal'+${teacher.id}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Teachers</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <form class="col-12" action="/teacher/update" method="post">
+                                    <div class="form-group">
+                                        <label for="teacherName">Name:</label>
+                                        <input required th:attr="value=${teacher.name} " type="text" class="form-control" id="teacherName" placeholder="Enter the name" name="teacherName">
+                                    </div>
+                                    <input name="id" type="hidden" th:value="${teacher.id}">
+                                    <input name="teacherToString" type="hidden" th:value="${teacher.toString()}">
+                                    <div class="dropdown form-group">
+                                        <button class="btn bg-light dropdown-toggle" type="button" id="dropdownMenuSubjects" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" th:text="#{edit.subjects}">
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuSubjects">
+                                            <li th:each="subject: ${subjects}" class="dropdown-item"><input name="teacherSubjects" th:data-subj="${teacher.id}" th:value="${subject.id}"
+                                                                                                            th:text="${subject}" type="checkbox" th:checked="${teacher.hasSubject(subject.id)}"/></li>
+                                        </ul>
+                                    </div>
+                                    <div style="height: 15px;"></div>
+                                    <div class="form-group">
+                                        <button type="submit" class="col-3 btn btn-success" th:text="#{edit.update}" onclick="if (!isAtLeastOneCheckboxChecked('teacherSubjects', true)) { alert('Choose at least one specialty!'); event.preventDefault(); }">Update</button>
+                                        <button formaction="/teacher/delete/" type="submit" class="ml-2 col-3 btn btn-danger" th:text="#{edit.delete}">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div th:each="lesson: ${schedule.getLessons()}" class="modal fade" th:id="'modal'+${lesson.id}">
+            <div class="modal-dialog">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Lessons</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <form class="col-12" action="/lesson/update/" method="post">
+                                    <input name="id" type="hidden" th:value="${lesson.id}">
+                                    <input name="lesson" type="hidden" th:value="${lesson.toString()}">
+                                    <input name="specId" type="hidden" th:value="${lessonSpec}">
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label for="lessonDay">Day:</label>
+                                            <select required name="day" id="lessonDay" class="form-control">
+                                                <option th:selected="${lesson.dayOfWeek.getValue()==1}" value="1">MONDAY</option>
+                                                <option th:selected="${lesson.dayOfWeek.getValue()==2}" value="2">TUESDAY</option>
+                                                <option th:selected="${lesson.dayOfWeek.getValue()==3}" value="3">WEDNESDAY</option>
+                                                <option th:selected="${lesson.dayOfWeek.getValue()==4}" value="4">THURSDAY</option>
+                                                <option th:selected="${lesson.dayOfWeek.getValue()==5}" value="5">FRIDAY</option>
+                                                <option th:selected="${lesson.dayOfWeek.getValue()==6}" value="6">SATURDAY</option>
+                                                <option th:selected="${lesson.dayOfWeek.getValue()==7}" value="7">SUNDAY</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label for="lessonTime" >Time:</label>
+                                            <select required name="time" id="lessonTime" class="form-control">
+                                                <option th:selected="${lesson.time.ordinal()==0}" value="0">8:30-9:50</option>
+                                                <option th:selected="${lesson.time.ordinal()==1}" value="1">10:00-11:20</option>
+                                                <option th:selected="${lesson.time.ordinal()==2}" value="2">11:40-13:00</option>
+                                                <option th:selected="${lesson.time.ordinal()==3}" value="3">13:30-14:50</option>
+                                                <option th:selected="${lesson.time.ordinal()==4}" value="4">15:00-16:20</option>
+                                                <option th:selected="${lesson.time.ordinal()==5}" value="5">16:30-17:50</option>
+                                                <option th:selected="${lesson.time.ordinal()==6}" value="6">18:00-19:20</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label th:for="'subjId'+${lesson.id}">Subject:</label>
+                                            <select required name="subjId" th:id="'subjId'+${lesson.id}" class="form-control">
+                                                <option th:each="subject: ${subjects}" th:text="${subject.name}" th:value="${subject.id}" th:selected="${subject.id==lesson.subject.id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label th:for="'teachId'+${lesson.id}">Teacher:</label>
+                                            <select required name="teachId" th:id="'teachId'+${lesson.id}" class="form-control">
+                                                <option th:each="teacher: ${teachers}" th:text="${teacher.name}" th:value="${teacher.id}" th:selected="${teacher.id==lesson.teacher.id}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label th:for="'lessonGroup'+${lesson.id}">Group (0 = lecture):</label>
+                                            <input required class="form-control" type="number" th:id="'lessonGroup'+${lesson.id}" name="group" min="0" max="50" step="1" th:value="${lesson.group.getValue()}">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label for="lessonWeeks">Weeks:</label>
+                                            <input required class="form-control" name="weeks" id="lessonWeeks" type="text" th:value="${lesson.weeks}"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label for="lessonRoom">Room:</label>
+                                            <input required type="text" name="room" list="lessonRoom" class="form-control" th:value="${lesson.room.type.ordinal()==1} ? ${lesson.room.room} : 'remotely'"/>
+                                            <datalist id="lessonRoom">
+                                                <option value="remotely"></option>
+                                                <option th:value="${lesson.room.type.ordinal()==1} ? ${lesson.room.room} : ''"></option>
+                                            </datalist>
+                                        </div>
+                                    </div>
+                                    <div style="height: 15px;"></div>
+                                    <div class="form-group">
+                                        <button type="submit" class="col-3 btn btn-success" th:text="#{edit.update}">Update</button>
+                                        <button formaction="lesson/delete/" formnovalidate type="submit" class="ml-2 col-3 btn btn-danger" th:text="#{edit.delete}">Delete</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <script th:inline="javascript">
         /*<![CDATA[*/
