@@ -152,6 +152,17 @@ public class Lesson implements Comparable<Lesson>{
         return res;
     }
 
+    public String[] getColumnArray() {
+        String[] res = new String[6];
+        res[0] = this.time.toString();
+        res[1] = this.subject.getName();
+        res[2] = this.teacher.getName();
+        res[3] = this.group.getType() == SubjectType.SubjectTypeEnum.LECTURE ? "LECTURE" : this.group.getGroup();
+        res[4] = this.weeks;
+        res[5] = this.room.getType() == Room.RoomType.REMOTELY ? "REMOTELY" : this.room.getRoom();
+        return res;
+    }
+
 
     public enum Time {
 

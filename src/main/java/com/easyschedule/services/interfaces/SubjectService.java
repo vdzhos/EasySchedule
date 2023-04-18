@@ -32,4 +32,8 @@ public interface SubjectService {
 
     Set<Integer> getLessonWeeks(Set<Long> ids);
 
+    boolean subjectExistsByName(String name);
+
+    Subject getSubjectByName(String name);
+
 }

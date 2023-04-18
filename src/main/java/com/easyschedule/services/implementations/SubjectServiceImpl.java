@@ -122,6 +122,18 @@ public class SubjectServiceImpl implements SubjectService {
         return set;
     }
 
+    @Override
+    public boolean subjectExistsByName(String name) {
+        return subjectRepo.existsByName(name);
+    }
+
+    @Override
+    public Subject getSubjectByName(String name) {
+        Iterable<Subject> res = subjectRepo.findByName(name);
+        if (!res.iterator().hasNext()) throw new SubjectNotFoundException("Subject with name '"+ name +"' has not been found!");
+        return res.iterator().next();
+    }
+
     private boolean nothingChanged(Subject subject, String name, int quantOfGroups, Set<Specialty> specialties) {
         return subject.getName().equals(name) && subject.getQuantOfGroups() == quantOfGroups
                 && subject.getSpecialties().equals(specialties);

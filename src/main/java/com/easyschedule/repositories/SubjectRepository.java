@@ -15,4 +15,7 @@ public interface SubjectRepository extends CrudRepository<Subject, Long> {
     @Query("select s from Subject s where lower(s.name) like lower( :name) and not s.id = :id")
     Iterable<Subject> findByNameAndNotId(@Param("id") long id, @Param("name") String name);
 
+    @Query("select case when count(s)> 0 then true else false end from Subject s where lower(s.name) like lower(concat('%', :name,'%'))")
+    boolean existsByName(@Param("name") String name);
+
 }
