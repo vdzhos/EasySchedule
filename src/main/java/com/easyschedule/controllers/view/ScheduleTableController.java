@@ -6,6 +6,7 @@ import com.easyschedule.models.Subject;
 import com.easyschedule.models.Teacher;
 import com.easyschedule.services.interfaces.ScheduleService;
 import com.easyschedule.services.interfaces.SpecialtyService;
+import com.easyschedule.xlsx.ScheduleDownloader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -13,7 +14,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -112,6 +120,27 @@ public class ScheduleTableController {
         if(this.teachers != null)
             model.addAttribute("teachers", teachers);
         return "scheduleTablePage";
+    }
+
+    @GetMapping("/download")
+    @ResponseBody
+    public void download(HttpServletResponse response) {
+        String fileName1 = entityName + ".xlsx";
+        String fileName2 = URLEncoder.encode(fileName1, StandardCharsets.UTF_8);
+        response.setContentType("application/ms-excel; charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        response.setHeader("Content-Disposition","attachment; filename="+fileName2);
+        response.setHeader("Content-Transfer-Encoding","binary");
+        try{
+            BufferedOutputStream bos =new BufferedOutputStream(response.getOutputStream());
+            ScheduleDownloader sd = new ScheduleDownloader(entityName);
+            Collections.sort(lessons);
+            sd.downloadSchedule(lessons, bos);
+            bos.close();
+            response.flushBuffer();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
